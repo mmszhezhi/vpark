@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>登录</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="padding: 16px">
+<form action="/login" method="post">
+  <div class="form-group">
+    <label for="username">手机号码/Email</label>
+    <input type="text" class="form-control" name="username" id="username">
+  </div>
+  <div class="form-group">
+    <label for="password">密码</label>
+    {% if error %}
+    <input type="password" class="form-control is-invalid" name="password" id="password">
+    <div class="invalid-feedback">
+        {{ error }}
+    </div>
+    {% else %}
+    <input type="password" class="form-control" name="password" id="password">
+    {% endif %}
+  </div>
+  <button type="submit" class="btn btn-primary">登录</button>
+</form>
+</body>
+</html>

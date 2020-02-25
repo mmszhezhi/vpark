@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一键开门</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".list-group>li>button").click(function() {
+                console.log($(this).attr("name"));
+                $(this).attr("class", "btn btn-primary");
+                $(this).attr("disabled",true);
+                $(this).text("正在开门");
+                const btn = $(this);
+                $.ajax({
+                    url: "/open/" + $(this).attr("name"),
+                    success: function (result) {
+                        console.log(result);
+                        btn.text(result.msg);
+                        if (result.code == 0) {
+                            console.log("success");
+                            btn.attr("class", "btn btn-success");
+                        } else {
+                            btn.attr("class", "btn btn-danger");
+                        }
+                        setTimeout(function () {
+                            btn.attr("disabled",false);
+                            btn.attr("class", "btn btn-outline-primary");
+                            btn.text("开门");
+                        }, 3000);
+                    }
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+<ul class="nav justify-content-end" style="font-size: 1.4rem">
+  <li class="nav-item" style="left: 0; position: absolute">
+    <a class="nav-link disabled" href="#" style="font-weight: bold; color: black">一键开门</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{username}}</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="/logout">退出</a>
+  </li>
+</ul>
+<ul class="list-group">
+    {% for door in doors %}
+    <li class="list-group-item" style="border-radius: 0">
+        <span style="font-size: 1.5rem">{{door.equipmentCode}}</span>
+        <button type="button" class="btn btn-outline-primary" name="{{door.id}}" style="float: right">开门</button>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
